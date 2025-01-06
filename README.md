@@ -1,7 +1,7 @@
 **TIF2PNG**
 ================
 
-Convert TIF images to PNG and visualize them with ease!
+Convert TIF images to PNG or JPG and visualize them with ease!
 
 **Overview**
 ------------
@@ -20,7 +20,8 @@ Convert TIF images to PNG and visualize them with ease!
 
 * Python > 3.12
 * `matplotlib` library for visualization (optional)
-* `pillow`for image management
+* `opencv-python` for image management
+* `rasterio` for TIF management
 
 **Usage**
 -----
@@ -35,15 +36,15 @@ Convert TIF images to PNG and visualize them with ease!
 
 * Convert a single TIF file to PNG:
 ```bash
-$ python tif2png.py convert input.tif output.png
+$ python tif2image.py convert input.tif output.png
 ```
 * Visualise an png
 ```bash
-$ python visualize.py output.png
+$ python tif2image visualize output.png
 ```
 * Convert multiple TIF files to PNG in batch mode:
 ```bash
-$ python tif2png.py batch_convert -i input1.tif input2.tif -o output/
+$ python tif2image.py batch_convert -i input1.tif input2.tif -o output/
 ```
 
 **License**

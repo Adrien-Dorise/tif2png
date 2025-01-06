@@ -1,9 +1,7 @@
 import os
 from enum import Enum
 
-import src.tif2png as tif2png
-import src.tif2jpg as tif2jpg
-
+import src.tif2image as tif2image
 
 if __name__ == "__main__":
     class Format(Enum):
@@ -28,6 +26,6 @@ if __name__ == "__main__":
 
     for tif_path in tif_paths:
         if format in {Format.JPG, Format.ALL}:
-            tif2jpg.convert_tif_to_jpg(tif_path, tif_path[:-3] + "jpg")
+            tif2image.convert_tif_to_image(tif_path, tif_path[:-3] + "jpg")
         if format in {Format.PNG, Format.ALL}:
-            tif2png.convert_tif_to_png(tif_path, tif_path[:-3] + "png")
+            tif2image.convert_tif_to_image(tif_path, tif_path[:-3] + "png")

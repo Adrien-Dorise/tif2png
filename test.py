@@ -1,5 +1,4 @@
-import src.tif2png as tif2png
-import src.tif2jpg as tif2jpg
+import src.tif2image as tif2image
 
 
 if __name__ == "__main__":
@@ -12,8 +11,8 @@ if __name__ == "__main__":
     test = Test.TIF2JPG
     
     if test in {Test.TIF2JPG, Test.ALL}:
-        tif2jpg.convert_tif_to_jpg("data_dummy/sample/sample.tif", "data_dummy/output/output.jpg")
+        tif2image.convert_tif_to_image("data_dummy/sample/sample.tif", "data_dummy/output/output.jpg")
     if test in {Test.TIF2PNG, Test.ALL}:
-        tif2png.convert_tif_to_png("data_dummy/sample/sample.tif", "data_dummy/output/output.png")
+        tif2image.convert_tif_to_image("data_dummy/sample/sample.tif", "data_dummy/output/output.png")
 
     
