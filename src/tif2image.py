@@ -55,7 +55,7 @@ def multispectral_to_RGB(img):
     print(f"Multispectral image downscaled from {np.shape(img)[-1]} bands to 3 RGB bands")
     return rgb_img
 
-def stretch_0_255(img, percentile=2):
+def stretch_0_255(img, percentile=1):
     """
     Normalise an image to a int [0,255] range.
     It includes a non-linear processing of the extremum values.
@@ -126,20 +126,20 @@ def visualize_image(image_file):
     plt.show()
 
 def main():
-    parser = argparse.ArgumentParser(description="Convert TIF images to JPG and visualize them.")
+    parser = argparse.ArgumentParser(description="Convert TIF images to image format (PNG, JPG) and visualize them.")
     subparsers = parser.add_subparsers(dest="command")
 
     # Define the convert command
-    convert_parser = subparsers.add_parser("convert", help="Convert a TIF image to JPG.")
+    convert_parser = subparsers.add_parser("convert", help="Convert a TIF image to image format (PNG, JPG).")
     convert_parser.add_argument("input_file", help="Path to the input TIF file.")
-    convert_parser.add_argument("output_file", help="Path to the output JPG file.")
+    convert_parser.add_argument("output_file", help="Path to the output image file, with correct extension.")
 
     # Define the visualize command
-    visualize_parser = subparsers.add_parser("visualize", help="Visualize a JPG image.")
-    visualize_parser.add_argument("jpg_file", help="Path to the input JPG file.")
+    visualize_parser = subparsers.add_parser("visualize", help="Visualize a PNG/JPG image.")
+    visualize_parser.add_argument("jpg_file", help="Path to the input PNG/JPG file.")
 
     # Define the batch convert command
-    batch_convert_parser = subparsers.add_parser("batch_convert", help="Convert multiple TIF images to JPG in batch mode.")
+    batch_convert_parser = subparsers.add_parser("batch_convert", help="Convert multiple TIF images to PNG/JPG in batch mode.")
     batch_convert_parser.add_argument("-i", "--input_files", nargs="+", help="Paths to the input TIF files.")
     batch_convert_parser.add_argument("-o", "--output_dir", help="Path to the output directory.")
 
