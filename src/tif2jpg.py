@@ -14,7 +14,7 @@ def convert_tif_to_jpg(input_file, output_file):
         input_file (str): Path to the input TIF file.
         output_file (str): Path to the output JPG file.
     """
-    img = Image.open(input_file)
+    img = Image.open(rf'{input_file}')
     img = img.convert('RGB')
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
     img.save(output_file, "JPEG")
@@ -29,7 +29,7 @@ def visualize_jpg(jpg_file):
     Args:
         jpg_file (str): Path to the input JPG file.
     """
-    img = plt.imread(jpg_file)
+    img = plt.imread(rf'{jpg_file}')
     plt.imshow(img)
     plt.show()
 

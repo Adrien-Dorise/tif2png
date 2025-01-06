@@ -14,7 +14,7 @@ def convert_tif_to_png(input_file, output_file):
         input_file (str): Path to the input TIF file.
         output_file (str): Path to the output PNG file.
     """
-    img = Image.open(input_file)
+    img = Image.open(rf'{input_file}')
     img = img.convert('RGB')
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
     img.save(output_file, "PNG")
@@ -29,7 +29,7 @@ def visualize_png(png_file):
     Args:
         png_file (str): Path to the input PNG file.
     """
-    img = plt.imread(png_file)
+    img = plt.imread(rf'{png_file}')
     plt.imshow(img)
     plt.show()
 
