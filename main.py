@@ -10,6 +10,7 @@ if __name__ == "__main__":
         JPG = 2      
 
     format = Format.JPG
+    stretch_image = True
     input_path = "data_dummy/sample"
     
     tif_paths = []
@@ -26,6 +27,6 @@ if __name__ == "__main__":
 
     for tif_path in tif_paths:
         if format in {Format.JPG, Format.ALL}:
-            tif2image.convert_tif_to_image(tif_path, tif_path[:-3] + "jpg")
+            tif2image.convert_tif_to_image(tif_path, tif_path[:-3] + "jpg", stretch=stretch_image)
         if format in {Format.PNG, Format.ALL}:
-            tif2image.convert_tif_to_image(tif_path, tif_path[:-3] + "png")
+            tif2image.convert_tif_to_image(tif_path, tif_path[:-3] + "png", stretch=stretch_image)
