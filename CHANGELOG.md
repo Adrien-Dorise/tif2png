@@ -1,3 +1,7 @@
+# v1.1.0 Package is now pip installable
+- Added a setup.py to be able to install this program as python package.
+- Simply run `pip install git+https://github.com/Adrien-Dorise/tif2png`
+
 # v1.0.0 Added multispectral support
 
 ## Multispectral

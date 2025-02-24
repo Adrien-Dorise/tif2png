@@ -1,7 +1,7 @@
 import os
 from enum import Enum
 
-import src.tif2image as tif2image
+import tif2png.tif2image as tif2image
 
 if __name__ == "__main__":
     class Format(Enum):
