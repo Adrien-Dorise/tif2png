@@ -13,6 +13,7 @@ Convert TIF images to PNG or JPG and visualize them with ease!
 
 * Convert multiple TIF files to PNG with a single command
 * Visualize the converted PNG images using matplotlib
+* Convert all TIF files in a folder
 * Supports batch processing of TIF files
 
 **Requirements**
@@ -22,29 +23,30 @@ Convert TIF images to PNG or JPG and visualize them with ease!
 * `matplotlib` library for visualization (optional)
 * `opencv-python` for image management
 * `rasterio` for TIF management
+* `pillow`for image management
 
 **Usage**
 -----
 
 1. Clone this repository: `git clone https://github.com/your-username/tif2png.git`
 2. Install the required libraries: `pip install matplotlib`
-3. Run the converter script: `python tif2png.py <input_tif_file> <output_png_file>`
-4. Visualize the converted PNG image (optional): `python visualize.py <png_file>`
+3. Run the converter script: `python tif2image/convert.py <input_tif_file> <output_png_file>`
+4. Visualize the converted PNG image (optional): `python tif2image/convert.py <png_file>`
 
 **Example Use Cases**
 --------------------
 
 * Convert a single TIF file to PNG:
 ```bash
-$ python tif2image.py convert input.tif output.png
+$ python tif2image/convert.py  convert input.tif output.png
+```
+* Convert a whole tif folder int png:
+```bash
+python tif2image/convert.py folder_convert -i path/to/input_folder -o path/to/output_folder
 ```
 * Visualise an png
 ```bash
-$ python tif2image visualize output.png
-```
-* Convert multiple TIF files to PNG in batch mode:
-```bash
-$ python tif2image.py batch_convert -i input1.tif input2.tif -o output/
+$ python tif2image/convert.py  visualize output.png
 ```
 
 **License**
