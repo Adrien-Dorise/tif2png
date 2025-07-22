@@ -10,7 +10,7 @@ if __name__ == "__main__":
         JPG = 2      
 
     format = Format.JPG
-    stretch_image = True
+    stretch_image = False
     input_path = "data_dummy/sample"
     
     tif_paths = []

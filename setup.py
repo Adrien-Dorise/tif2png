@@ -10,6 +10,7 @@ setup(name="tif2image",
                 ],
       install_requires=[
             "numpy >= 1.24.2",
+            "matplotlib >= 3.9.2",
             "opencv-python >= 4.10.0.84",
             "rasterio >= 1.4.3",
             "pillow >= 11.0.0",
