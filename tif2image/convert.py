@@ -43,7 +43,6 @@ def convert_tif_to_image(input_file, output_file, stretch=False):
         stretch (boolean): True to use a stretching method when normalising the image to int [0,255].
                            Stretching sometimes improves image quality as it eliminates outlier values, at the cost of min/max information
     """
-    print(f"INPUT: {input_file}") 
     with rasterio.open(input_file) as src:
         img = src.read()
     
@@ -66,8 +65,6 @@ def convert_tif_to_image(input_file, output_file, stretch=False):
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
     img_pil.save(output_file)
     
-    print(f"OUTPUT: {output_file}")
-
 
 
 def visualize_image(image_file):
@@ -82,6 +79,7 @@ def visualize_image(image_file):
     plt.show()
 
 def process_folder(input_dir, output_dir):
+    print(f"Creating png: {input_dir} -> {output_dir}")
     os.makedirs(output_dir, exist_ok=True)
     for file_name in os.listdir(input_dir):
         if file_name.lower().endswith(".tif"):
