@@ -33,34 +33,70 @@ def get_alpha_channel(image):
     return alpha_channel
 
 
-def convert_tif_to_image(input_file, output_file, stretch=False):
+def convert_tif_to_image(input_file, output_file, original_bit_encoding=None, channels_indices=[0,1,2], stretch=False):
     """
-    Convert a TIF image to anther image format (PNG, JPG).
+    Convert a multi-band TIF image to a standard image format (e.g., PNG or JPG), 
+    optionally selecting and reordering channels and applying normalization or contrast stretching.
 
-    Args:
-        input_file (str): Path to the input TIF file.
-        output_file (str): Path to the output JPG or PNG file.
-        stretch (boolean): True to use a stretching method when normalising the image to int [0,255].
-                           Stretching sometimes improves image quality as it eliminates outlier values, at the cost of min/max information
+    Parameters:
+    ----------
+    input_file : str
+        Path to the input GeoTIFF (.tif) file containing the multi-band image.
+    output_file : str
+        Path to the output image file (e.g., .png, .jpg). 
+        The image format is inferred from the file extension.
+    original_bit_encoding : int or None, optional (default=None)
+        Bit depth used to normalize the input image values.
+        For example, if the image is encoded on 12 bits, use 4096 (2^12).
+        If None, MinMax bit normalization is applied.
+    channels_indices : list of int, optional (default=[0,1,2])
+        List of band indices (0-based) to extract from the input image.
+        For example, [2,1,0] corresponds to R=band3, G=band2, B=band1 (common for satellite RGB composites).
+        If the input image has fewer than 3 bands, all available bands are used.
+    stretch : bool, optional (default=False)
+        Whether to apply contrast stretching (e.g., min-max normalization excluding outliers).
+        This enhances visual contrast but may alter pixel intensity ranges.
+    Notes:
+    -----
+    - Removes alpha channels if detected (based on `get_alpha_channel()` logic).
+    - The image is saved using PIL and must be in uint8 format.
+    - Supports grayscale or RGB images.
+    - For RGB, output shape must be (H, W, 3). For grayscale, (H, W).
+
+    Raises:
+    ------
+    ValueError if input image bands are incompatible with requested channel selection.
     """
     with rasterio.open(input_file) as src:
-        img = src.read()
-    
-    
-    if len(np.shape(img)) >= 3:        
+        img = []
+        if src.meta["count"] < 3:
+            channels_indices = list(range(0,src.meta["count"]))
+        for c in channels_indices:
+            img.append(src.read(c+1))
+        img = np.array(img)
         img = np.moveaxis(img,0, -1)
 
-        alpha_axis = get_alpha_channel(img)
-        if alpha_axis > 0: # An alpha channel is detected
-            img = np.delete(img,alpha_axis,2)
+    alpha_axis = get_alpha_channel(img)
+    if alpha_axis > 0: # An alpha channel is detected
+        img = np.delete(img,alpha_axis,2)
 
-        img = multispectral.remove_extra_bands(img)
-    
-    if(stretch):
-        img = format.stretch_0_255(img)
+    if original_bit_encoding is not None:
+        img = img / original_bit_encoding
+        img *= 255
+        if np.max(img) > 254:
+            print(f"WARNING in tif2png: The maximum bit value after applying original bit encoding conversion is {np.max(img)} > 254. \
+                    \nVerify that the image is indeed encoding on {original_bit_encoding}bits")
+        img = img.astype(np.uint8)
     else:
         img = cv2.normalize(img, None, alpha = 0, beta = 255, norm_type = cv2.NORM_MINMAX, dtype = cv2.CV_8U)
 
+
+    if(stretch):
+        img = format.stretch_0_255(img)
+    
+    if img.shape[-1] == 1:
+        img = img.reshape(img.shape[0],img.shape[1])
+    
     img_pil = Image.fromarray(img)
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
     img_pil.save(output_file)
@@ -78,14 +114,38 @@ def visualize_image(image_file):
     plt.imshow(img)
     plt.show()
 
-def process_folder(input_dir, output_dir):
+def process_folder(input_dir, output_dir,original_bit_encoding=None,channels_indices=[0,1,2],stretch=False):
+    """
+    Convert a an entire folder composed of TIF images to a standard image format (e.g., PNG or JPG), 
+    optionally selecting and reordering channels and applying normalization or contrast stretching.
+
+    Parameters:
+    ----------
+    input_file : str
+        Path to the input GeoTIFF (.tif) file containing the multi-band image.
+    output_file : str
+        Path to the output image file (e.g., .png, .jpg). 
+        The image format is inferred from the file extension.
+    original_bit_encoding : int or None, optional (default=None)
+        Bit depth used to normalize the input image values.
+        For example, if the image is encoded on 12 bits, use 4096 (2^12).
+        If None, MinMax bit normalization is applied.
+    channels_indices : list of int, optional (default=[0,1,2])
+        List of band indices (0-based) to extract from the input image.
+        For example, [2,1,0] corresponds to R=band3, G=band2, B=band1 (common for satellite RGB composites).
+        If the input image has fewer than 3 bands, all available bands are used.
+    stretch : bool, optional (default=False)
+        Whether to apply contrast stretching (e.g., min-max normalization excluding outliers).
+        This enhances visual contrast but may alter pixel intensity ranges.
+
+    """
     print(f"Creating png: {input_dir} -> {output_dir}")
     os.makedirs(output_dir, exist_ok=True)
     for file_name in os.listdir(input_dir):
         if file_name.lower().endswith(".tif"):
             input_path = os.path.join(input_dir, file_name)
             output_path = os.path.join(output_dir, file_name.replace(".tif", ".png"))
-            convert_tif_to_image(input_path, output_path)
+            convert_tif_to_image(input_path, output_path,original_bit_encoding,channels_indices,stretch)
 
 
 def main():

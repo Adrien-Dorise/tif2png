@@ -1,3 +1,12 @@
+# v1.2.0 Updated normalisation + added channel selection function
+- The uint8 conversion can now be done by giving the original bit encoding.
+  - By doing so, the image will not be normalised for uint8 (255) format
+  - Warning as if chosen wrongly, it can leads to value overflow
+- Logic is as before if None is passed as original encoding
+- Channels can now be selected
+  - It is useful when dealing with satellite images (format as [2,1,0])
+  - Fail safe in case images has less than 3 channels.
+
 # v1.1.0 Package is now pip installable
 - Added a setup.py to be able to install this program as python package.
 - Simply run `pip install git+https://github.com/Adrien-Dorise/tif2png`

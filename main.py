@@ -9,8 +9,10 @@ if __name__ == "__main__":
         PNG = 1
         JPG = 2      
 
-    format = Format.JPG
+    format = Format.PNG
     stretch_image = False
+    channel_selection = [0,1,2]
+    original_bit_encoding = None
     input_path = "data_dummy/sample"
     
     tif_paths = []
@@ -27,6 +29,6 @@ if __name__ == "__main__":
 
     for tif_path in tif_paths:
         if format in {Format.JPG, Format.ALL}:
-            tif2image.convert_tif_to_image(tif_path, tif_path[:-3] + "jpg", stretch=stretch_image)
+            tif2image.convert_tif_to_image(tif_path, tif_path[:-3] + "jpg", original_bit_encoding, channel_selection,stretch_image)
         if format in {Format.PNG, Format.ALL}:
-            tif2image.convert_tif_to_image(tif_path, tif_path[:-3] + "png", stretch=stretch_image)
+            tif2image.convert_tif_to_image(tif_path, tif_path[:-3] + "png", original_bit_encoding, channel_selection,stretch_image)
