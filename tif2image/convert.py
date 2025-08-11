@@ -83,9 +83,9 @@ def convert_tif_to_image(input_file, output_file, original_bit_encoding=None, ch
     if original_bit_encoding is not None:
         img = img / original_bit_encoding
         img *= 255
-        if np.max(img) > 254:
-            print(f"WARNING in tif2png: The maximum bit value after applying original bit encoding conversion is {np.max(img)} > 254. \
-                    \nVerify that the image is indeed encoding on {original_bit_encoding}bits")
+        if np.max(img) > 255:
+            print(f"WARNING in tif2png: The maximum bit value after applying original bit encoding conversion is {np.max(img)} > 255. \
+                    Verify that the image is indeed encoded on {original_bit_encoding}bits")
         img = img.astype(np.uint8)
     else:
         img = cv2.normalize(img, None, alpha = 0, beta = 255, norm_type = cv2.NORM_MINMAX, dtype = cv2.CV_8U)
